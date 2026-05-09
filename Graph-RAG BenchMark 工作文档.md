@@ -16,6 +16,22 @@
 - 方法概括：先用 LLM 从 query 中抽取关键词并检索相关节点，再通过带距离感知的 flow-based pruning 提取关键关系路径，最后把节点和边文本组织成 path-based prompt 供 LLM 生成答案。
 - 数据与评测：使用 UltraDomain，覆盖 Agriculture、Legal、History、CS、Biology、Mix 六个领域；与 NaiveRAG、HyDE、GraphRAG、LightRAG 对比；用 GPT-4o-mini 做 pairwise win-rate 评测，维度包括 Comprehensiveness、Diversity、Logicality、Relevance、Coherence。
 
+#### LEGO-GraphRAG: Modularizing Graph-based Retrieval-Augmented Generation for Design Space Exploration
+
+- 来源：PVLDB 2025 (Vol. 18, No. 10)
+- 代码/开源情况：已开源，[GitHub](https://github.com/gzy02/LEGO-GraphRAG)
+- 核心问题：现有的 GraphRAG 缺乏模块化的工作流分析、系统的解决方案框架和深入的实证研究。它们通常将检索阶段视为一个单一的、不可分割的过程，难以进行隔离分析与优化；同时，在应对大规模图谱的算法可扩展性，以及理解语义信息对 GraphRAG 性能影响方面存在明显的知识空白。
+- 方法概括：提出了一种名为 LEGO-GraphRAG 的模块化框架，将检索阶段细分为“子图提取”和“路径检索”两个模块 。该框架将各项技术系统地分类为“基于结构”和“语义增强”两类，像乐高积木一样支持复现现有工作，并能组合创建出大量新的 GraphRAG 实例，以权衡推理质量、运行效率和成本 。
+- 数据与评测：使用了大规模真实世界图谱 Freebase 以及单领域图谱 Wiki-Movies (MetaQA) ；在WebQSP、CWQ、GrailQA、WebQuestions和MetaQA这5个常用的查询集上进行了全面测试；广泛评估了7种现有实现和16种该框架生成的新实例；评测维度涵盖推理质量（Hits@1、F1 Score、LLM-based evaluation）、运行效率（检索时间）以及计算成本（Token 消耗和 GPU 显存使用）
+
+#### HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models
+
+- 来源：NeurIPS 2024; arXiv
+- 代码/开源情况：已开源，[GitHub](https://github.com/OSU-NLP-Group/HippoRAG)
+- 核心问题：现有的大语言模型（LLMs）及传统的检索增强生成（RAG）系统在处理需要跨越多个文档或段落进行知识整合的任务（如多跳问答）时表现吃力，难以像人类大脑那样持续、高效地整合海量新经验且避免灾难性遗忘。
+- 方法概括：受人类长时记忆中“海马体索引理论”的启发，该框架将 LLM、知识图谱（KG）和个性化 PageRank（PPR）算法进行了协同。离线阶段使用 LLM 将语料库转化为无模式（schemaless）知识图谱（模拟新皮层）；在线检索阶段，从 Query 中提取关键概念作为种子节点，并在图谱上运行 PPR 算法模拟神经激活扩散，从而在单步操作中实现跨文档的多跳隐式关联检索。
+- 数据与评测：主要在经典的多跳问答（Multi-hop QA）数据集（如 HotpotQA, 2WikiMultiHopQA, MuSiQue）上进行了评估；与标准 RAG 以及 IRCoT 等迭代检索方法进行了对比；评测维度包含 EM (Exact Match)、F1 Score 以及延迟和成本。结果表明，HippoRAG 实现了显著的性能提升，单步检索效果不仅媲美甚至超越迭代检索，且 API 成本降低了 10-30 倍，检索速度提高了 6-13 倍。
+
 ### 1.2 Agent 类
 
 #### GraphRAG-R1: Graph Retrieval-Augmented Generation with Process-Constrained Reinforcement Learning
